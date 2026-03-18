@@ -35,7 +35,9 @@ struct MenuViewSheet: ViewModifier {
                     )
                     .opacity(landscapeFullscreen ? 0 : 1)
                 }
-                .presentationBackground(Color.backgroundColor)
+                .if(Const.iOS26) { view in
+                    view.presentationBackground(Color.backgroundColor)
+                }
                 .presentationDragIndicator(.hidden)
                 .environment(\.colorScheme, colorScheme)
             }
