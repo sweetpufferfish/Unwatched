@@ -28,7 +28,11 @@ struct ChapterSettingsMenu: View {
             .tint(Color.automaticBlack)
 
             Section {
-                CloudAiButton()
+                CloudAiButton(dismissOnPaywall: true) {
+                    Text("cloudAI")
+                    Text("shortcut")
+                    Image(systemName: "sparkles")
+                }
                 GenerateChaptersMenuButton(viewModel: $viewModel, video: video)
 
             } header: {
@@ -94,16 +98,17 @@ struct GenerateChaptersMenuButton: View {
     }
 }
 
-struct CloudAiButton: View {
+struct CloudAiButton<Label: View>: View {
     @Environment(PlayerManager.self) var player
     @Environment(\.dismiss) var dismiss
     @Environment(\.openURL) var openURL
 
+    var dismissOnPaywall: Bool = false
+    @ViewBuilder var label: () -> Label
+
     var body: some View {
         Button {
-            let hasAccess = guardPremium {
-                dismiss()
-            }
+            let hasAccess = guardPremium(onInteraction: dismissOnPaywall ? { dismiss() } : nil)
             guard hasAccess else { return }
 
             let name = "Generate Chapters"
@@ -140,9 +145,7 @@ struct CloudAiButton: View {
                 openURL(UrlService.generateChaptersShortcutUrl)
             }
         } label: {
-            Text("cloudAI")
-            Text("shortcut")
-            Image(systemName: "sparkles")
+            label()
         }
     }
 }

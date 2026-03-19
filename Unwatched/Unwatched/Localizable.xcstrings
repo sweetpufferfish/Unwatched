@@ -11003,31 +11003,31 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keine Transkript-URL"
+            "value" : "Keine Transkript-URL gefunden. Stelle sicher, dass das Video abgespielt wird."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No Transcript URL"
+            "value" : "No Transcript URL found. Make sure the video has started playing."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sin URL de transcripción"
+            "value" : "No se encontró ninguna URL de transcripción. Asegúrate de que el video haya comenzado a reproducirse."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pas d’URL de transcription"
+            "value" : "Pas d’URL de transcription trouvée. Assurez-vous que la vidéo a commencé à être lue."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brak adresu URL transkryptu"
+            "value" : "Nie znaleziono adresu URL transkryptu. Upewnij się, że film zaczął się odtwarzać."
           }
         }
       }

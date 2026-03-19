@@ -278,7 +278,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um Videos anzusehen, öffne Unwatched auf deinem iOS/iPadOS-Gerät und füge Videos zu deiner Warteschlange hinzu.\n\nStelle sicher, dass die iCloud-Synchronisierung aktiviert ist (unter Mediathek → Einstellungen → Benutzerdaten)."
+            "value" : "Um Videos anzusehen, öffne Unwatched auf deinem iOS/iPadOS-Gerät und füge Videos zu deiner Warteschlange hinzu.\n\nStelle sicher, dass die iCloud-Synchronisation aktiviert ist (unter Bibliothek → Einstellungen → Benutzerdaten)."
           }
         },
         "en" : {

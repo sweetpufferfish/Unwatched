@@ -51,14 +51,13 @@ struct SettingsView: View {
                     }
                     .linkHoverEffect()
 
-                    Link(destination: UrlService.generateChaptersShortcutUrl) {
+                    CloudAiButton {
                         LibraryNavListItem(
                             "generateChapters",
                             systemName: "sparkles"
                         )
                     }
                     .requiresPremium()
-                    .linkHoverEffect()
                 }
 
                 MySection("userData") {
