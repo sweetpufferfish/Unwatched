@@ -187,6 +187,11 @@ struct PlayerView: View {
     func handleSwipe(_ direction: SwipeDirecton) {
         // workaround: when using landscapeFullscreen directly, it captures the initial value
         let landscapeFullscreen = SheetPositionReader.shared.landscapeFullscreen
+        // workaround: read live value from UserDefaults to avoid stale closure capture
+        let hideControlsFullscreen = Const.hideControlsFullscreen.bool ?? false
+        func setHideControlsFullscreen(_ value: Bool) {
+            UserDefaults.standard.set(value, forKey: Const.hideControlsFullscreen)
+        }
         switch direction {
         case .up:
             guard Const.swipeGestureUp.bool ?? true else {
@@ -199,7 +204,7 @@ struct PlayerView: View {
             return
             #endif
             if enableHideControls {
-                hideControlsFullscreen = true
+                setHideControlsFullscreen(true)
             } else if !landscapeFullscreen {
                 #if os(iOS)
                 OrientationManager.changeOrientation(to: .landscapeRight)
@@ -218,7 +223,7 @@ struct PlayerView: View {
             return
             #endif
             if enableHideControls && hideControlsFullscreen {
-                hideControlsFullscreen = false
+                setHideControlsFullscreen(false)
             } else if landscapeFullscreen {
                 #if os(iOS)
                 OrientationManager.changeOrientation(to: .portrait)
