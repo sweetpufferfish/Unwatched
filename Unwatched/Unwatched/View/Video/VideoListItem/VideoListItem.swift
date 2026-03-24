@@ -95,8 +95,8 @@ struct VideoListItem: View, Equatable {
         .foregroundStyle(Color.neutralAccentColor)
         .handleVideoListItemTap(videoData)
         #else
-        .handleVideoListItemTap(videoData)
         .drawingGroup()
+        .handleVideoListItemTap(videoData)
         #endif
     }
 }

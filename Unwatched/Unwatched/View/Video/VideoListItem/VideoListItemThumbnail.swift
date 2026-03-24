@@ -14,6 +14,8 @@ struct VideoListItemThumbnail: View {
 
     @State var width: CGFloat?
 
+    let imageUrls: [URL?]
+
     init(
         _ video: VideoData,
         config: VideoListItemConfig,
@@ -24,15 +26,8 @@ struct VideoListItemThumbnail: View {
         self.config = config
         self.fixedSize = size
         self.largeThumbnail = largeThumbnail
-    }
-
-    var imageUrls: [URL?] {
-        [
-            UrlService.getImageUrl(
-                video.thumbnailUrl, largeThumbnail
-                    ? .large
-                    : .small
-            ),
+        self.imageUrls = [
+            UrlService.getImageUrl(video.thumbnailUrl, largeThumbnail ? .large : .small),
             UrlService.getImageUrl(video.thumbnailUrl, .medium)
         ]
     }

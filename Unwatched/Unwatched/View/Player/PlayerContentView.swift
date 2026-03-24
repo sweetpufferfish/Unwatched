@@ -58,7 +58,7 @@ struct PlayerContentView: View {
                         showActions: false
                     )
                     .overlay {
-                        topShadow
+                        PlayerTopShadow()
                     }
                     .tabItem {
                         Image(systemName: "checklist")
@@ -79,11 +79,11 @@ struct PlayerContentView: View {
                 SheetPositionReader.shared.playerContentViewHeight = size.height
             }
 
-            bottomShadow
+            PlayerBottomShadow(height: shadowHeight)
                 .opacity(navManager.showMenu ? 1 : 0)
 
             if !hidePlayerPageIndicator {
-                pageControl
+                PlayerPageControl()
                     .padding(
                         .bottom,
                         compactSize
@@ -96,56 +96,6 @@ struct PlayerContentView: View {
         }
         // TODO: enable safe area? Last checked on iOS 26 beta 8 (flickering issue)
         // .ignoresSafeArea(edges: Const.iOS26 ? .bottom : [])
-    }
-
-    var pageControl: some View {
-        PageControl(
-            currentPage: Binding(
-                get: { navManager.playerTab.rawValue },
-                set: { newValue in
-                    if let newValue, let newTab = ControlNavigationTab(rawValue: newValue) {
-                        navManager.playerTab = newTab
-                    }
-                }
-            ),
-            numberOfPages: 2
-        )
-        .clipShape(Capsule())
-    }
-
-    var topShadow: some View {
-        VStack(spacing: 0) {
-            Color.black
-                .allowsHitTesting(false)
-                .frame(height: 35)
-                .mask(LinearGradient(gradient: Gradient(
-                    stops: [
-                        .init(color: .black.opacity(0.9), location: 0),
-                        .init(color: .black.opacity(0.3), location: 0.55),
-                        .init(color: .clear, location: 1)
-                    ]
-                ), startPoint: .top, endPoint: .bottom))
-
-            Spacer()
-        }
-    }
-
-    @ViewBuilder
-    var bottomShadow: some View {
-        VStack(spacing: 0) {
-            Spacer()
-
-            Color.black
-                .allowsHitTesting(false)
-                .frame(height: shadowHeight)
-                .mask(LinearGradient(gradient: Gradient(
-                    stops: [
-                        .init(color: .black.opacity(0.9), location: 0),
-                        .init(color: .black.opacity(0.5), location: 0.8),
-                        .init(color: .clear, location: 1)
-                    ]
-                ), startPoint: .bottom, endPoint: .top))
-        }
     }
 
     var shadowHeight: CGFloat {

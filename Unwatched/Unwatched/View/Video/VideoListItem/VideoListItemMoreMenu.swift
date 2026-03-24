@@ -28,11 +28,23 @@ struct VideoListItemMoreMenuView: View {
         VStack {
             #if os(iOS)
             ControlGroup {
-                videoActions
+                VideoListItemActions(
+                    setWatched: setWatched,
+                    addVideoToTopQueue: addVideoToTopQueue,
+                    addVideoToBottomQueue: addVideoToBottomQueue,
+                    clearVideoEverywhere: clearVideoEverywhere,
+                    canBeCleared: canBeCleared
+                )
             }
             .controlGroupStyle(.compactMenu)
             #else
-            videoActions
+            VideoListItemActions(
+                setWatched: setWatched,
+                addVideoToTopQueue: addVideoToTopQueue,
+                addVideoToBottomQueue: addVideoToBottomQueue,
+                clearVideoEverywhere: clearVideoEverywhere,
+                canBeCleared: canBeCleared
+            )
             Divider()
             Button {
                 viewChannel?()
@@ -95,27 +107,6 @@ struct VideoListItemMoreMenuView: View {
             }
         }
         .tint(Color.automaticBlack)
-    }
-
-    @ViewBuilder
-    var videoActions: some View {
-        Button("markWatched", systemImage: "checkmark", action: { setWatched(true) })
-
-        Button("queueNext",
-               systemImage: Const.queueNextSF,
-               action: addVideoToTopQueue
-        )
-
-        Button("queueLast",
-               systemImage: Const.queueLastSF,
-               action: addVideoToBottomQueue
-        )
-        Button(
-            "clearVideo",
-            systemImage: Const.clearNoFillSF,
-            action: clearVideoEverywhere
-        )
-        .disabled(!canBeCleared)
     }
 
     var shareUrl: URL? {

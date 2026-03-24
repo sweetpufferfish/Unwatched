@@ -388,7 +388,21 @@ struct TrailingSwipeActionsView: View {
                 .tint(theme.color.myMix(with: Color.black, by: 0.9))
             }
             #if os(iOS)
-            moreMenu
+            TrailingSwipeMoreMenu(
+                videoData: videoData,
+                theme: theme,
+                config: config,
+                setWatched: setWatched,
+                addVideoToTopQueue: addVideoToTopQueue,
+                addVideoToBottomQueue: addVideoToBottomQueue,
+                clearVideoEverywhere: clearVideoEverywhere,
+                canBeCleared: canBeCleared,
+                toggleBookmark: toggleBookmark,
+                toggleIsNew: toggleIsNew,
+                moveToInbox: moveToInbox,
+                clearList: clearList,
+                deleteVideo: deleteVideo
+            )
             #endif
             Button {
                 guard let video = VideoService.getVideoModel(
@@ -406,31 +420,6 @@ struct TrailingSwipeActionsView: View {
             .tint(theme.color.myMix(with: Color.black, by: 0.3))
             .accessibilityLabel("videoDescription")
         }
-    }
-
-    var moreMenu: some View {
-        Menu {
-            VideoListItemMoreMenuView(
-                videoData: videoData,
-                config: config,
-                setWatched: setWatched,
-                addVideoToTopQueue: addVideoToTopQueue,
-                addVideoToBottomQueue: addVideoToBottomQueue,
-                clearVideoEverywhere: clearVideoEverywhere,
-                canBeCleared: canBeCleared,
-                toggleBookmark: toggleBookmark,
-                toggleIsNew: toggleIsNew,
-                moveToInbox: moveToInbox,
-                openUrlInApp: { urlString in
-                    navManager.openUrlInApp(.url(urlString))
-                },
-                clearList: clearList,
-                deleteVideo: deleteVideo
-            )
-        } label: {
-            Image(systemName: "ellipsis")
-        }
-        .tint(theme.color.myMix(with: Color.black, by: 0.5))
     }
 }
 

@@ -19,15 +19,13 @@ struct PlayerGestureOverlay: ViewModifier {
                         .gesture(
                             DragGesture(minimumDistance: 0, coordinateSpace: .local)
                                 .onChanged { value in
+                                    gestureState.handleTouchStart(value: value, in: geometry.size)
                                     gestureState.handleTouchMove(value: value, in: geometry.size)
                                 }
                                 .onEnded { value in
                                     gestureState.handleTouchEnd(value: value, in: geometry.size) { gesture in
                                         handleGesture(gesture)
                                     }
-                                }
-                                .onChanged { value in
-                                    gestureState.handleTouchStart(value: value, in: geometry.size)
                                 }
                         )
                 }
