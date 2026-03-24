@@ -870,6 +870,7 @@ extension PlayerWebView {
 
             if (preventDefault && event && isNewEmbedding) {
                 event.preventDefault();
+                event.stopPropagation();
             }
         }
 
