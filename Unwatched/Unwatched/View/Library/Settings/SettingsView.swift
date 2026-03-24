@@ -105,6 +105,13 @@ struct SettingsView: View {
                         )
                     }
                     .linkHoverEffect()
+                    Link(destination: UrlService.testFlightUrl) {
+                        LibraryNavListItem(
+                            "testFlight",
+                            systemName: "airplane.departure"
+                        )
+                    }
+                    .linkHoverEffect()
                 }
                 .myListInsetBackground()
 
