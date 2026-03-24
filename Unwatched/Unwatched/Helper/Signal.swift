@@ -9,8 +9,13 @@ import SwiftData
 import UnwatchedShared
 
 struct Signal {
+    static var isTestFlight: Bool {
+        Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+    }
+
     static func setup() {
         #if os(iOS)
+        if !isTestFlight { return }
         if !(Const.analytics.bool ?? true) { return }
         let config = TelemetryDeck.Config(appID: Credentials.telemetry)
         config.defaultSignalPrefix = "Unwatched."
@@ -20,6 +25,7 @@ struct Signal {
     }
 
     static func signalBool(_ signalName: String, value: Bool) {
+        if !isTestFlight { return }
         #if os(iOS)
         TelemetryDeck.signal(signalName, parameters: ["value": value ? "On" : "Off"])
         #endif
@@ -34,12 +40,14 @@ struct Signal {
         }
         if !(Const.analytics.bool ?? true) { return }
         Log.info("Signal: \(signalName)")
+        if !isTestFlight { return }
         TelemetryDeck.signal(signalName, parameters: parameters)
         #endif
     }
 
     static func error(_ id: String) {
         if !(Const.analytics.bool ?? true) { return }
+        if !isTestFlight { return }
         TelemetryDeck.errorOccurred(id: id)
     }
 }
