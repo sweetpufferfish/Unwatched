@@ -90,6 +90,7 @@ struct UnwatchedApp: App {
         Window("unwatchedPremium", id: Const.windowPremium) {
             PremiumOfferView()
                 .frame(width: 450, height: 650)
+                .environment(NavigationTitleManager())
         }
         .windowResizability(.contentSize)
         #endif
