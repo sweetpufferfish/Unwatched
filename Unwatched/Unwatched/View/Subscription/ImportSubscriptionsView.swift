@@ -111,8 +111,11 @@ struct ImportSubscriptionsView: View {
         .background {
             MyBackgroundColor(macOS: false)
         }
-        .fileImporter(isPresented: $showFileImporter,
-                      allowedContentTypes: [.plainText], onCompletion: handleFileImport)
+        .fileImporter(
+            isPresented: $showFileImporter,
+            allowedContentTypes: [.plainText, .opml],
+            onCompletion: handleFileImport
+        )
         .onDisappear {
             if !subStates.isEmpty {
                 onSuccess?()
@@ -225,14 +228,26 @@ struct ImportSubscriptionsView: View {
         do {
             let isSecureAccess = file.startAccessingSecurityScopedResource()
             let content = try String(contentsOf: file)
-            let rows = content.components(separatedBy: "\n")
-            parseRows(rows)
+            if file.pathExtension.lowercased() == "opml" || content.trimmingCharacters(in: .whitespaces).hasPrefix("<") {
+                parseOPML(content)
+            } else {
+                let rows = content.components(separatedBy: "\n")
+                parseRows(rows)
+            }
             if isSecureAccess {
                 file.stopAccessingSecurityScopedResource()
             }
         } catch {
             Log.error("Failed to read file: \(error)")
         }
+    }
+
+    func parseOPML(_ content: String) {
+        guard let data = content.data(using: .utf8) else { return }
+        let parser = OPMLParser(data: data)
+        let parsed = parser.parse()
+        sendableSubs = parsed.sorted(by: { $0.title < $1.title })
+        selection = Set(sendableSubs)
     }
 
     func parseRows(_ rows: [String]) {

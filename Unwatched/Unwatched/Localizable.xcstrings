@@ -7977,31 +7977,31 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tippe unten auf **Datei auswählen** und navigiere zu der extrahierten Datei:"
+            "value" : "Tippe unten auf **Datei auswählen** und navigiere zu der extrahierten Datei (unterstützt **.csv**, **.opml**):"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tap on **Select File** below and navigate to the extracted file:"
+            "value" : "Tap on **Select File** below and navigate to the extracted file (supports **.csv**, **.opml**):"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toca **Seleccionar archivo** abajo y navega hasta el archivo extraído:"
+            "value" : "Toca **Seleccionar archivo** abajo y navega hasta el archivo extraído (admite **.csv**, **.opml**):"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Touchez **Sélectionner un fichier** ci-dessous et accédez au fichier extrait:"
+            "value" : "Touchez **Sélectionner un fichier** ci-dessous et accédez au fichier extrait (prend en charge **.csv**, **.opml**):"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stuknij **Wybierz plik** poniżej i przejdź do rozpakowanego pliku:"
+            "value" : "Stuknij **Wybierz plik** poniżej i przejdź do rozpakowanego pliku (obsługuje **.csv**, **.opml**):"
           }
         }
       }
@@ -13174,40 +13174,6 @@
         }
       }
     },
-    "testFlight" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TestFlight Beta"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TestFlight Beta"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TestFlight Beta"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TestFlight Beta"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TestFlight Beta"
-          }
-        }
-      }
-    },
     "reloadPlayer" : {
       "localizations" : {
         "de" : {
@@ -16631,7 +16597,38 @@
       }
     },
     "testFlight" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestFlight Beta"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestFlight Beta"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestFlight Beta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestFlight Beta"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestFlight Beta"
+          }
+        }
+      }
     },
     "textContainsPlaylist" : {
       "localizations" : {
