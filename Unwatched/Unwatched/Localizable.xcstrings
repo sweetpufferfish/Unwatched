@@ -10760,6 +10760,40 @@
         }
       }
     },
+    "noSubscriptionsToExport" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Abos zum Exportieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Subscriptions to Export"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay suscripciones para exportar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun abonnement à exporter"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak subskrypcji do wyeksportowania"
+          }
+        }
+      }
+    },
     "notAllVideosFaqA" : {
       "localizations" : {
         "de" : {
