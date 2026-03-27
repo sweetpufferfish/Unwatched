@@ -55,13 +55,15 @@ struct ImportSubscriptionsView: View {
                         if !filtered.isEmpty {
                             ForEach(filtered, id: \.self) { sub in
                                 Text(sub.title)
+                                    .listRowBackground(MyBackgroundColor(macOS: false))
                             }
                             Spacer()
                                 .frame(height: 50)
                                 .listRowSeparator(.hidden)
+                                .listRowBackground(MyBackgroundColor(macOS: false))
                         }
                     }
-                    .listRowBackground(Color.backgroundColor)
+                    .scrollContentBackground(.hidden)
                     .searchable(text: $searchString)
                     .listStyle(.plain)
                     #if os(iOS)
@@ -113,7 +115,7 @@ struct ImportSubscriptionsView: View {
         }
         .fileImporter(
             isPresented: $showFileImporter,
-            allowedContentTypes: [.plainText, .opml],
+            allowedContentTypes: [.plainText, .opml, .xml],
             onCompletion: handleFileImport
         )
         .onDisappear {
