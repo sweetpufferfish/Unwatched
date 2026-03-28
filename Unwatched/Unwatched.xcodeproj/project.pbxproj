@@ -277,6 +277,10 @@
 		887EB2DF2CFE167700F9D517 /* MenuSheetDetents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887EB2DD2CFE167600F9D517 /* MenuSheetDetents.swift */; };
 		887EB2E12CFE676700F9D517 /* QueueViewUnavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887EB2E02CFE676700F9D517 /* QueueViewUnavailable.swift */; };
 		887EB2E22CFE676700F9D517 /* QueueViewUnavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887EB2E02CFE676700F9D517 /* QueueViewUnavailable.swift */; };
+		888016B02F77C3D900C16007 /* ExportImportTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888016AE2F77C3D900C16007 /* ExportImportTutorial.swift */; };
+		888016B12F77C3D900C16007 /* MyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888016AF2F77C3D900C16007 /* MyButtonStyle.swift */; };
+		888016B22F77C3D900C16007 /* ExportImportTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888016AE2F77C3D900C16007 /* ExportImportTutorial.swift */; };
+		888016B32F77C3D900C16007 /* MyButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888016AF2F77C3D900C16007 /* MyButtonStyle.swift */; };
 		888050C22D3E5576002D02EB /* DeferDateSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888050C12D3E5576002D02EB /* DeferDateSelector.swift */; };
 		888050C32D3E5576002D02EB /* DeferDateSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888050C12D3E5576002D02EB /* DeferDateSelector.swift */; };
 		8880D6CB2B95BEE900E76E20 /* UIApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8880D6CA2B95BEE900E76E20 /* UIApplicationDelegate.swift */; };
@@ -1012,6 +1016,8 @@
 		887E82AF2CD8FD8500B196EA /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		887EB2DD2CFE167600F9D517 /* MenuSheetDetents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSheetDetents.swift; sourceTree = "<group>"; };
 		887EB2E02CFE676700F9D517 /* QueueViewUnavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueViewUnavailable.swift; sourceTree = "<group>"; };
+		888016AE2F77C3D900C16007 /* ExportImportTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportImportTutorial.swift; sourceTree = "<group>"; };
+		888016AF2F77C3D900C16007 /* MyButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyButtonStyle.swift; sourceTree = "<group>"; };
 		888050C12D3E5576002D02EB /* DeferDateSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeferDateSelector.swift; sourceTree = "<group>"; };
 		8880D6CA2B95BEE900E76E20 /* UIApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationDelegate.swift; sourceTree = "<group>"; };
 		888129AA2D60802500BE47E4 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -1590,6 +1596,8 @@
 		883CA80F2B5AFE1300028D52 /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
+				888016AE2F77C3D900C16007 /* ExportImportTutorial.swift */,
+				888016AF2F77C3D900C16007 /* MyButtonStyle.swift */,
 				8898B6762B480C3700348D01 /* AddSubscriptionView.swift */,
 				8823EB772B5519C60010A12F /* SubStateOverview.swift */,
 				88BDC3A62B78172C00656D63 /* ImportSubscriptionsView.swift */,
@@ -2422,6 +2430,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				889AF8CB2C50ECA9001CEDE6 /* Task.swift in Sources */,
+				888016B22F77C3D900C16007 /* ExportImportTutorial.swift in Sources */,
+				888016B32F77C3D900C16007 /* MyButtonStyle.swift in Sources */,
 				88CD388C2E213D0B00E7B21C /* TranscriptSearch.swift in Sources */,
 				88C4F69A2F24CD6E005893C5 /* SubscriptionShortsSetting.swift in Sources */,
 				88F149D82F03D99600516422 /* StatsService.swift in Sources */,
@@ -2813,6 +2823,8 @@
 				884777312D2150060044E812 /* UserDataServiceError.swift in Sources */,
 				88BDC3A32B76A9BF00656D63 /* SetupView.swift in Sources */,
 				88358A7D2C65561B00AF71F8 /* UIImage.swift in Sources */,
+				888016B02F77C3D900C16007 /* ExportImportTutorial.swift in Sources */,
+				888016B12F77C3D900C16007 /* MyButtonStyle.swift in Sources */,
 				887DBB552BB6AC5A0012238A /* ClearAllVideosButton.swift in Sources */,
 				88CD38922E213D3400E7B21C /* TranscriptList.swift in Sources */,
 				88BDC3AB2B79F0DE00656D63 /* SleepTimer.swift in Sources */,

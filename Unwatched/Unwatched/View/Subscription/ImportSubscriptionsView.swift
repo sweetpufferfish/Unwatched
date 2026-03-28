@@ -12,27 +12,38 @@ struct ImportSubscriptionsView: View {
     @Environment(RefreshManager.self) var refresher
     @AppStorage(Const.themeColor) var theme = ThemeColor()
 
-    @State var showFileImporter = false
+    @State private var showFileImporter = false
     @State var sendableSubs = [SendableSubscription]()
     @State var subStates = [SubscriptionState]()
 
     @State private var selection = Set<SendableSubscription>()
     #if os(iOS) || os(visionOS)
-    @State var editMode = EditMode.active
+    @State private var editMode = EditMode.active
     #else
-    @State var editMode = NSTableView.SelectionHighlightStyle.regular
+    @State private var editMode = NSTableView.SelectionHighlightStyle.regular
     #endif
-    @State var isLoading = false
-    @State var searchString = ""
-    @State var loadSubStatesTask: Task<[SubscriptionState], Error>?
+    @State private var isLoading = false
+    @State private var searchString = ""
+    @State private var loadSubStatesTask: Task<[SubscriptionState], Error>?
 
     var importButtonPadding = false
     var onSuccess: (() -> Void)?
 
+    var filteredSubs: [SendableSubscription] {
+        guard !searchString.isEmpty else { return sendableSubs }
+        return sendableSubs.filter { $0.title.localizedStandardContains(searchString) }
+    }
+
+    var importButtonLabel: String {
+        String(AttributedString(
+            localized: "importSubscriptions ^[\(selection.count) subscription](inflect: true)"
+        ).characters)
+    }
+
     var body: some View {
         VStack {
             if sendableSubs.isEmpty {
-                exportImportTutorial
+                ExportImportTutorial(showFileImporter: $showFileImporter)
             } else if isLoading {
                 ProgressView {
                     Text("importing \(selection.count) subscriptions")
@@ -48,12 +59,8 @@ struct ImportSubscriptionsView: View {
             } else {
                 ZStack {
                     List(selection: $selection) {
-                        let filtered = sendableSubs.filter({
-                            searchString.isEmpty
-                                || $0.title.localizedStandardContains(searchString)
-                        })
-                        if !filtered.isEmpty {
-                            ForEach(filtered, id: \.self) { sub in
+                        if !filteredSubs.isEmpty {
+                            ForEach(filteredSubs, id: \.self) { sub in
                                 Text(sub.title)
                                     .listRowBackground(MyBackgroundColor(macOS: false))
                             }
@@ -91,9 +98,7 @@ struct ImportSubscriptionsView: View {
                                 Text("importAddSubscriptions")
                             }
                         } label: {
-                            Text(String(AttributedString(
-                                localized: "importSubscriptions ^[\(selection.count) subscription](inflect: true)"
-                            ).characters))
+                            Text(importButtonLabel)
                         }
                         .padding(importButtonPadding ? 10 : 0)
                         .foregroundStyle(theme.contrastColor)
@@ -139,52 +144,6 @@ struct ImportSubscriptionsView: View {
         }
     }
 
-    var exportImportTutorial: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 5) {
-                Text("howToExportTitle")
-                    .font(.title3)
-                    .bold()
-                    .frame(maxWidth: .infinity, alignment: .center)
-
-                Link(destination: UrlService.youtubeTakeoutUrl) {
-                    Text("googleTakeout")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .foregroundStyle(theme.contrastColor)
-                .padding(15)
-
-                Text("howToExport2")
-                    .padding(.bottom, 40)
-
-                Text("howToImportTitle")
-                    .font(.title3)
-                    .bold()
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.bottom, 10)
-
-                Text("howToImport1")
-
-                Button {
-                    showFileImporter = true
-                } label: {
-                    Text("selectFile")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .foregroundStyle(theme.contrastColor)
-                .padding(15)
-
-                Text("howToImport2")
-                Spacer()
-            }
-            .fontWeight(.regular)
-            .myTint()
-            .padding(.horizontal, 20)
-        }
-    }
-
     func startReplacingImport() {
         Log.info("startReplacingImport")
         withAnimation {
@@ -227,43 +186,49 @@ struct ImportSubscriptionsView: View {
     }
 
     func readFile(_ file: URL) {
-        do {
-            let isSecureAccess = file.startAccessingSecurityScopedResource()
-            let content = try String(contentsOf: file)
-            if file.pathExtension.lowercased() == "opml" || content.trimmingCharacters(in: .whitespaces).hasPrefix("<") {
-                parseOPML(content)
-            } else {
-                let rows = content.components(separatedBy: "\n")
-                parseRows(rows)
+        Task.detached(priority: .userInitiated) {
+            do {
+                let isSecureAccess = file.startAccessingSecurityScopedResource()
+                let content = try String(contentsOf: file)
+                let isXML = file.pathExtension.lowercased() == "opml"
+                    || content.trimmingCharacters(in: .whitespaces).hasPrefix("<")
+                let parsed: [SendableSubscription]
+                if isXML {
+                    parsed = Self.parseOPML(content)
+                } else {
+                    let rows = content.components(separatedBy: "\n")
+                    parsed = Self.parseRows(rows)
+                }
+                if isSecureAccess {
+                    file.stopAccessingSecurityScopedResource()
+                }
+                await MainActor.run {
+                    sendableSubs = parsed
+                    selection = Set(parsed)
+                }
+            } catch {
+                Log.error("Failed to read file: \(error)")
             }
-            if isSecureAccess {
-                file.stopAccessingSecurityScopedResource()
-            }
-        } catch {
-            Log.error("Failed to read file: \(error)")
         }
     }
 
-    func parseOPML(_ content: String) {
-        guard let data = content.data(using: .utf8) else { return }
+    nonisolated static func parseOPML(_ content: String) -> [SendableSubscription] {
+        guard let data = content.data(using: .utf8) else { return [] }
         let parser = OPMLParser(data: data)
-        let parsed = parser.parse()
-        sendableSubs = parsed.sorted(by: { $0.title < $1.title })
-        selection = Set(sendableSubs)
+        return parser.parse().sorted(by: { $0.title < $1.title })
     }
 
-    func parseRows(_ rows: [String]) {
-        let validRows = rows.dropFirst().filter { !$0.isEmpty }
-        for row in validRows {
+    nonisolated static func parseRows(_ rows: [String]) -> [SendableSubscription] {
+        var result = [SendableSubscription]()
+        for row in rows.dropFirst() where !row.isEmpty {
             if let sub = parseRow(row) {
-                sendableSubs.append(sub)
+                result.append(sub)
             }
         }
-        sendableSubs.sort(by: { $0.title < $1.title })
-        selection = Set(sendableSubs)
+        return result.sorted(by: { $0.title < $1.title })
     }
 
-    func parseRow(_ row: String) -> SendableSubscription? {
+    nonisolated static func parseRow(_ row: String) -> SendableSubscription? {
         let columns = row.components(separatedBy: ",")
         Log.info("columns \(columns)")
         guard columns.count >= 3 else {
@@ -274,19 +239,6 @@ struct ImportSubscriptionsView: View {
         // let channelUrl = columns[1] | not needed
         let channelTitle = columns[2]
         return SendableSubscription(title: channelTitle, youtubeChannelId: channelId)
-    }
-}
-
-struct MyButtonStyle: ButtonStyle {
-    @AppStorage(Const.themeColor) var theme = ThemeColor()
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .padding(.vertical, 8)
-            .padding(.horizontal, 10)
-            .foregroundColor(theme.contrastColor)
-            .background(theme.color)
-            .cornerRadius(5)
     }
 }
 
