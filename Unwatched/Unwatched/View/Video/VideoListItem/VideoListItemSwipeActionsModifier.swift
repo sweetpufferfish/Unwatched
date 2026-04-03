@@ -312,7 +312,7 @@ struct VideoListItemSwipeActionsModifier: ViewModifier {
             clearVideoEverywhere()
             let hasQueueEntry = video.queueEntry != nil
             withAnimation {
-                CleanupService.deleteVideo(video, modelContext)
+                CleanupService.deleteVideo(video, deleteAll: true, modelContext)
                 try? modelContext.save()
                 onChange?(nil, video.queueEntry?.order)
             }

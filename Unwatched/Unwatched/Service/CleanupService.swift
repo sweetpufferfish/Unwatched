@@ -59,7 +59,8 @@ struct CleanupService {
         }
     }
 
-    /// Deletes all inbox and queue entries for the given video ID (in rare case of duplicate entries that both link the same video, happens sometimes with deferred videos).
+    /// Deletes all inbox and queue entries for the given video ID (in rare case of duplicate entries that both link
+    /// the same video, happens sometimes with deferred videos).
     static func cleanupAllEntries(_ videoId: String, _ modelContext: ModelContext) {
         let fetchInbox = FetchDescriptor<InboxEntry>(
             predicate: #Predicate { $0.video?.youtubeId == videoId }
@@ -80,14 +81,16 @@ struct CleanupService {
     }
 
     /// Deletes video and all relationships (workaround; can be removed if .cascade delete rule works properly)
-    static func deleteVideo(_ video: Video, _ modelContext: ModelContext) {
+    static func deleteVideo(_ video: Video, deleteAll: Bool = false, _ modelContext: ModelContext) {
         if let entry = video.inboxEntry {
             modelContext.delete(entry)
         }
         if let entry = video.queueEntry {
             modelContext.delete(entry)
         }
-        cleanupAllEntries(video.youtubeId, modelContext)
+        if deleteAll {
+            cleanupAllEntries(video.youtubeId, modelContext)
+        }
 
         var chaptersToDelete: [Chapter] = []
         if let chapters = video.chapters {

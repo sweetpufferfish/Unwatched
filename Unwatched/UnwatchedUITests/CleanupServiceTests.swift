@@ -139,6 +139,19 @@ class CleanupServiceTests: XCTestCase {
             XCTAssertFalse(hasInboxEntry, "entry differences: inbox entry should be removed")
             XCTAssertTrue(hasQueueEntry, "entry differences: queue entry should be kept")
 
+            // Verify no over-deletion: entries on kept videos must survive dedup
+            let keptInboxDiff = videos.first(where: { $0.title == "inboxDiff" })
+            XCTAssertNotNil(keptInboxDiff?.inboxEntry, "inbox entry of kept video was incorrectly deleted during dedup")
+
+            let keptQueueDiff = videos.first(where: { $0.title == "queueDiff" })
+            XCTAssertNotNil(keptQueueDiff?.queueEntry, "queue entry of kept video was incorrectly deleted during dedup")
+
+            let keptQueueOrderDiff = videos.first(where: { $0.title == "queueOrderDiff" })
+            XCTAssertNotNil(keptQueueOrderDiff?.queueEntry, "queue entry of kept video (order) was incorrectly deleted during dedup")
+
+            // 15 videos inserted, 7 duplicates removed → 8 should remain
+            XCTAssertEqual(videos.count, 8, "too many videos deleted during dedup")
+
         } catch {
             XCTFail("Fetching failed: \(error)")
         }
