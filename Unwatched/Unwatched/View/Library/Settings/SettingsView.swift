@@ -112,6 +112,13 @@ struct SettingsView: View {
                         )
                     }
                     .linkHoverEffect()
+                    .contextMenu {
+                        Button {
+                            ClipboardService.set(UrlService.testFlightUrl.absoluteString)
+                        } label: {
+                            Label("copyUrl", systemImage: "document.on.document.fill")
+                        }
+                    }
                 }
                 .myListInsetBackground()
 
