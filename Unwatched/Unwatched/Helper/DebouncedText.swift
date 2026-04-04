@@ -28,17 +28,17 @@ class DebouncedText {
         let value = val
         let delay = self.delay
         Task {
-            let newValue = value
             task?.cancel()
-            task = Task.detached {
+            let newTask = Task.detached { () -> String? in
                 do {
                     try await Task.sleep(nanoseconds: delay)
-                    return newValue
+                    return value
                 } catch {
                     return nil
                 }
             }
-            if let newValue = await task?.value {
+            task = newTask
+            if let newValue = await newTask.value {
                 self.debounced = newValue
             }
         }

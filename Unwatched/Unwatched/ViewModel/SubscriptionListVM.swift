@@ -11,26 +11,32 @@ import UnwatchedShared
 @Observable
 class SubscriptionListVM: TransactionVM<Subscription> {
     @MainActor
+    var allSubscriptions = [SendableSubscription]()
+
+    @MainActor
     var subscriptions = [SendableSubscription]()
 
     @MainActor
     var isLoading = true
 
-    @ObservationIgnored var searchText: String?
+    @ObservationIgnored private var filterTask: Task<Void, Never>?
     private var sort = [SortDescriptor<Subscription>]()
 
     @MainActor
     private func fetchSubscriptions() async {
-        let subs = await SubscriptionService.getActiveSubscriptions(searchText, sort)
+        let subs = await SubscriptionService.getActiveSubscriptions(nil, sort)
         withAnimation {
-            subscriptions = subs
+            allSubscriptions = subs
             isLoading = false
         }
+        applyFilter(searchText: currentSearchText, to: subs)
     }
+
+    @ObservationIgnored private var currentSearchText = ""
 
     @MainActor
     var hasNoSubscriptions: Bool {
-        subscriptions.isEmpty && !isLoading && (searchText?.isEmpty ?? true)
+        allSubscriptions.isEmpty && !isLoading
     }
 
     @MainActor
@@ -59,9 +65,27 @@ class SubscriptionListVM: TransactionVM<Subscription> {
     }
 
     @MainActor
-    func setSearchText(_ searchText: String) async {
-        self.searchText = searchText
-        await updateData(force: true)
+    func setSearchText(_ text: String) {
+        currentSearchText = text
+        applyFilter(searchText: text, to: allSubscriptions)
+    }
+
+    @MainActor
+    private func applyFilter(searchText: String, to source: [SendableSubscription]) {
+        filterTask?.cancel()
+        guard !searchText.isEmpty else {
+            subscriptions = source
+            return
+        }
+        filterTask = Task.detached {
+            let result = source.filter { $0.title.localizedStandardContains(searchText) }
+            guard !Task.isCancelled else { return }
+            await MainActor.run {
+                withAnimation {
+                    self.subscriptions = result
+                }
+            }
+        }
     }
 
     @MainActor
@@ -75,7 +99,7 @@ class SubscriptionListVM: TransactionVM<Subscription> {
     @MainActor
     func updateData(force: Bool = false) async {
         var loaded = false
-        if subscriptions.isEmpty || force {
+        if allSubscriptions.isEmpty || force {
             await fetchSubscriptions()
             loaded = true
         }
@@ -99,14 +123,15 @@ class SubscriptionListVM: TransactionVM<Subscription> {
                 return
             }
 
-            if let index = subscriptions.firstIndex(where: { $0.persistentId == persistentId }) {
+            if let index = allSubscriptions.firstIndex(where: { $0.persistentId == persistentId }) {
                 withAnimation {
                     if updatedSub.isArchived {
-                        subscriptions.remove(at: index)
+                        allSubscriptions.remove(at: index)
                     } else if let sendable = updatedSub.toExport {
-                        subscriptions[index] = sendable
+                        allSubscriptions[index] = sendable
                     }
                 }
+                applyFilter(searchText: currentSearchText, to: allSubscriptions)
             } else {
                 isLoading = true
                 Task {

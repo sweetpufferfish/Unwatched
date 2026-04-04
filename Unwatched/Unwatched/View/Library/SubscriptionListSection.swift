@@ -120,9 +120,7 @@ struct SearchableSubscriptions: View {
 
         SubscriptionListView(subscriptionsVM, onDelete: onDelete)
             .onChange(of: text.debounced) {
-                Task {
-                    await subscriptionsVM.setSearchText(text.debounced)
-                }
+                subscriptionsVM.setSearchText(text.debounced)
             }
             .onChange(of: subscriptionSorting) {
                 subscriptionsVM.setSorting(subscriptionSorting, refresh: true)
