@@ -8657,31 +8657,99 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Füge Videos, die du ansehen möchtest, zu deiner Queue hinzu, entferne die anderen. Du entscheidest nur einmal — und entfernte Videos bleiben in der Bibliothek."
+            "value" : "Füge Videos, die du ansehen möchtest, zu deiner Queue hinzu, entferne den Rest. Entfernte Videos bleiben über die Bibliothek erreichbar."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add videos you want to watch to your queue, removed the rest. You’ll only decide once — and removed videos stick around in the Library."
+            "value" : "Add videos you want to watch to your Queue, remove the rest. Removed videos remain accessible via the Library."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Agrega los videos que quieres ver a tu queue, elimina el resto. Solo decidirás una vez — y los videos eliminados permanecen en la Biblioteca."
+            "value" : "Agrega los videos que quieres ver a tu queue, elimina el resto. Los videos eliminados siguen siendo accesibles desde la Biblioteca."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajoutez les vidéos que vous voulez regarder à votre queue, supprimez le reste. Vous ne déciderez qu'une fois — et les vidéos supprimées restent dans la Bibliothèque."
+            "value" : "Ajoutez les vidéos que vous voulez regarder à votre queue, supprimez le reste. Les vidéos supprimées restent accessibles via la Bibliothèque."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dodaj filmy, które chcesz obejrzeć, do swojej queue, usuń resztę. Zdecydujesz tylko raz — a usunięte filmy pozostaną w Bibliotece."
+            "value" : "Dodaj filmy, które chcesz obejrzeć, do swojej queue, usuń resztę. Usunięte filmy pozostają dostępne w Bibliotece."
+          }
+        }
+      }
+    },
+    "dismissInboxTip" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorerst ausblenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss for Now"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocultar por ahora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer pour l'instant"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukryj na razie"
+          }
+        }
+      }
+    },
+    "hideInboxTipPermanently" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht mehr anzeigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Never Show Again"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No mostrar de nuevo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne plus afficher"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie pokazuj więcej"
           }
         }
       }
@@ -15368,6 +15436,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pokaż samouczek"
+          }
+        }
+      }
+    },
+    "resetInboxTip" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inbox-Hinweis zurücksetzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Inbox Tip"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer aviso del inbox"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser l'info-bulle de la boîte de réception"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetuj wskazówkę skrzynki"
           }
         }
       }

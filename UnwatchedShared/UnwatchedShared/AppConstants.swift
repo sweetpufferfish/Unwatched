@@ -152,6 +152,7 @@ public struct Const {
 
     /// Option to keep the last x videos in the inbox when clearing it
     public static let inboxOverflowKeepCount = 20
+    public static let inboxOverflowKeepCountAlt = 50
     
     /// Days after which cached images will be cleaned up
     public static let cleanupCacheDays = 40
@@ -256,6 +257,7 @@ public struct Const {
     public static let originalAudio = "originalAudio"
     public static let playBrowserVideosInApp = "playBrowserVideosInApp"
     public static let inboxFullDismissedDate = "inboxFullDismissedDate"
+    public static let inboxTipHiddenPermanently = "inboxTipHiddenPermanently"
     public static let temporarySpeedUp = "temporarySpeedUp"
     public static let temporarySlowDown = "temporarySlowDown"
     public static let cleanupImageCache = "cleanupImageCache"

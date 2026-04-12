@@ -10,6 +10,7 @@ struct DebugView: View {
     @AppStorage(Const.monitorBackgroundFetchesNotification) var monitorBackgroundFetches: Bool = false
     @AppStorage(Const.showTutorial) var showTutorial: Bool = true
     @AppStorage(Const.backgroundPlayback) var backgroundPlayback: Bool = true
+    @AppStorage(Const.inboxTipHiddenPermanently) var inboxTipHiddenPermanently = false
 
     @Environment(\.modelContext) var modelContext
     @Environment(PlayerManager.self) var player
@@ -31,6 +32,13 @@ struct DebugView: View {
                         Text("showTutorial")
                     }
                     .disabled(showTutorial == true && player.video == nil)
+
+                    Button {
+                        inboxTipHiddenPermanently = false
+                    } label: {
+                        Text("resetInboxTip")
+                    }
+                    .disabled(!inboxTipHiddenPermanently)
                 }
 
                 MySection("notifications") {

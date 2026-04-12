@@ -12,7 +12,9 @@ struct InboxOverflowTipView: View {
 
     @AppStorage(Const.inboxFullDismissedDate)
     var inboxFullDismissedDate = Date.distantPast.timeIntervalSinceReferenceDate
+    @AppStorage(Const.inboxTipHiddenPermanently) var inboxTipHiddenPermanently = false
     @State private var triggerAction = false
+    @State private var showDismissAlert = false
 
     var body: some View {
         if shouldShow {
@@ -30,18 +32,43 @@ struct InboxOverflowTipView: View {
                         Spacer()
 
                         Button {
-                            setDismissedDate()
+                            showDismissAlert = true
                         } label: {
                             Image(systemName: Const.clearNoFillSF)
                                 .font(.headline)
                                 .foregroundStyle(.tertiary)
                         }
                         .buttonStyle(.plain)
+                        .confirmationDialog("", isPresented: $showDismissAlert) {
+                            Button("dismissInboxTip") {
+                                setDismissedDate()
+                            }
+                            Button("hideInboxTipPermanently", role: .destructive) {
+                                withAnimation {
+                                    inboxTipHiddenPermanently = true
+                                }
+                            }
+                        }
                     }
 
                     Text("inboxOverflowTipMessage")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+
+                    Divider()
+
+                    Button {
+                        let count = CleanupService.clearOldInboxEntries(
+                            keep: Const.inboxOverflowKeepCountAlt,
+                            modelContext
+                        )
+                        if count != nil {
+                            setDismissedDate()
+                        }
+                    } label: {
+                        Text("inboxOverflowTipAction \(Const.inboxOverflowKeepCountAlt)")
+                    }
+                    .buttonStyle(.borderless)
 
                     Divider()
 
@@ -80,7 +107,8 @@ struct InboxOverflowTipView: View {
     }
 
     var shouldShow: Bool {
-        dismissedDate.addingTimeInterval(60 * 60 * 24 * 7) < Date.now // 1 week
+        !inboxTipHiddenPermanently &&
+            dismissedDate.addingTimeInterval(60 * 60 * 24 * 7) < Date.now // 1 week
     }
 
     var dismissedDate: Date {
@@ -96,4 +124,9 @@ struct InboxOverflowTipView: View {
             inboxFullDismissedDate = Date.now.timeIntervalSinceReferenceDate
         }
     }
+}
+
+#Preview {
+    InboxOverflowTipView()
+        .previewEnvironments()
 }
