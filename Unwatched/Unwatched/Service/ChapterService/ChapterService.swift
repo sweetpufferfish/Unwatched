@@ -193,7 +193,6 @@ struct ChapterService {
             && sendable.endTime == chapter.endTime
             && sendable.category == chapter.category
             && sendable.title == chapter.title
-            && sendable.isActive == chapter.isActive
     }
 
     static func updateIfNeeded(_ chapters: [SendableChapter], _ video: Video?, _ modelContext: ModelContext) {
