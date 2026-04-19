@@ -7,103 +7,45 @@ import Foundation
 import SwiftData
 import UnwatchedShared
 import OSLog
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
-import AppKit
-#endif
 
 @MainActor
 final class StatsService {
     static let shared = StatsService()
 
     private var currentVideoId: String?
-    private var startTime: Date?
-    private var pauseTask: Task<Void, Never>?
+    private var lastVideoTime: Double?
+    private var lastWallClockTime: Date?
 
-    private init() {
-        #if os(iOS) || os(tvOS) || os(visionOS)
-        NotificationCenter.default.addObserver(
-            forName: UIApplication.willTerminateNotification, object: nil, queue: .main
-        ) { [weak self] _ in
-            self?.handleWillTerminate()
-        }
-        #elseif os(macOS)
-        NotificationCenter.default.addObserver(
-            forName: NSApplication.willTerminateNotification, object: nil, queue: .main
-        ) { [weak self] _ in
-            self?.handleWillTerminate()
-        }
-        #endif
-    }
+    private init() {}
 
-    private func handleWillTerminate() {
-        Log.info("StatsService: handleWillTerminate")
-        commitStats()
-    }
-
-    func handlePlay(_ videoId: String?) {
-        guard let videoId else { return }
-
-        if let currentVideoId, currentVideoId == videoId, let pauseTask {
-            Log.info("StatsService: resume \(videoId), cancelling pause")
-            pauseTask.cancel()
-            self.pauseTask = nil
-            return
+    func handleVideoTimeUpdate(videoId: String, time: Double) {
+        let now = Date()
+        defer {
+            if currentVideoId != videoId { currentVideoId = videoId }
+            lastVideoTime = time
+            lastWallClockTime = now
         }
 
-        // If we are switching videos, or starting fresh
-        if let currentVideoId, currentVideoId != videoId {
-            commitStats()
-        }
+        guard videoId == currentVideoId,
+              let last = lastVideoTime,
+              let lastClock = lastWallClockTime else { return }
 
-        Log.info("StatsService: play \(videoId)")
-        self.currentVideoId = videoId
-        self.startTime = Date()
-        self.pauseTask?.cancel()
-        self.pauseTask = nil
-    }
+        // Video must have actually advanced (guards against buffering and backward seeks)
+        guard time > last else { return }
 
-    func handlePause(_ videoId: String?) {
-        guard let videoId, let currentVideoId, currentVideoId == videoId else { return }
-
-        pauseTask?.cancel()
-        pauseTask = Task {
-            try? await Task.sleep(for: .seconds(1))
-            if Task.isCancelled { return }
-
-            commitStats()
-        }
-    }
-
-    private func commitStats() {
-        pauseTask?.cancel()
-        pauseTask = nil
-
-        guard let currentVideoId, let startTime else { return }
-
-        let duration = Date().timeIntervalSince(startTime)
+        let wallClockDelta = now.timeIntervalSince(lastClock)
+        // Cap to prevent runaway accumulation if the timer fires late
+        let duration = min(wallClockDelta, Double(Const.updateDbTimeSeconds) + 5)
         guard duration > 0 else { return }
 
-        Log.info("StatsService: commitStats \(currentVideoId), duration: \(duration)")
+        Log.info("StatsService: +\(duration)s for \(videoId)")
 
         let context = DataProvider.mainContext
-        // Fetch video to get channel ID
-        let predicate = #Predicate<Video> { $0.youtubeId == currentVideoId }
-        let descriptor = FetchDescriptor(predicate: predicate)
+        let predicate = #Predicate<Video> { $0.youtubeId == videoId }
+        guard let video = try? context.fetch(FetchDescriptor(predicate: predicate)).first,
+              let channelId = video.subscription?.youtubeChannelId ?? video.youtubeChannelId else { return }
 
-        do {
-            if let video = try context.fetch(descriptor).first {
-                if let channelId = video.subscription?.youtubeChannelId ?? video.youtubeChannelId {
-                    saveStat(channelId: channelId, duration: duration, context: context)
-                }
-            }
-        } catch {
-            Log.error("StatsService: Failed to fetch video: \(error)")
-        }
-
-        self.currentVideoId = nil
-        self.startTime = nil
+        saveStat(channelId: channelId, duration: duration, context: context)
     }
 
     private func saveStat(channelId: String, duration: TimeInterval, context: ModelContext) {

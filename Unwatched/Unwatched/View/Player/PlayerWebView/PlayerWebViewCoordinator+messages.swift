@@ -18,6 +18,7 @@ extension PlayerWebViewCoordinator {
             handlePlay()
         case "ended":
             parent.player.previousState.isPlaying = false
+            flushStats()
             parent.onVideoEnded()
         case "currentTime":
             handleTimeUpdate(payload)
@@ -260,7 +261,6 @@ extension PlayerWebViewCoordinator {
         #if os(iOS)
         BackgroundMonitor.handlePlay()
         #endif
-        StatsService.shared.handlePlay(parent.player.video?.youtubeId)
     }
 
     func handlePause(_ payload: String?) {
@@ -280,13 +280,7 @@ extension PlayerWebViewCoordinator {
         parent.player.previousState.isPlaying = false
         parent.player.pause()
 
-        let timeString = payloadArray[safe: 0]
-        if let string = payloadArray[safe: 2],
-           let url = URL(string: string),
-           let videoId = UrlService.getYoutubeIdFromUrl(url: url) {
-            handleTimeUpdate(timeString, persist: true, youtubeId: videoId)
-            StatsService.shared.handlePause(videoId)
-        }
+        flushStats(timeString: payloadArray[safe: 0], urlString: payloadArray[safe: 2])
 
         #if os(iOS)
         BackgroundMonitor.handlePause()
@@ -371,6 +365,22 @@ extension PlayerWebViewCoordinator {
         if persist || updateTimeCounter >= Const.updateDbTimeSeconds {
             updateTimeCounter = 0
             parent.player.updateElapsedTime(time, videoId: youtubeId)
+            if let videoId = youtubeId ?? parent.player.video?.youtubeId {
+                StatsService.shared.handleVideoTimeUpdate(videoId: videoId, time: time)
+            }
+        }
+    }
+
+    func flushStats(timeString: String? = nil, urlString: String? = nil) {
+        let videoId: String?
+        if let urlString, let url = URL(string: urlString) {
+            videoId = UrlService.getYoutubeIdFromUrl(url: url)
+        } else {
+            videoId = parent.player.video?.youtubeId
+        }
+        let resolvedTime = timeString ?? parent.player.currentTime.map { String($0) }
+        if let videoId {
+            handleTimeUpdate(resolvedTime, persist: true, youtubeId: videoId)
         }
     }
 }

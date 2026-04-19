@@ -115,7 +115,6 @@ extension PlayerManager {
         }
         updateVideoEnded()
         changeChapterTask?.cancel()
-        StatsService.shared.handlePause(video?.youtubeId)
     }
 
     /// Restarts, pauses or plays the current video
