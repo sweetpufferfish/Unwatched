@@ -13,10 +13,8 @@ struct PlayerCommands: Commands {
                 PlayerShortcut.playPause.render()
                 PlayerShortcut.playPause.render(isAlt: true)
 
-                #if os(macOS)
                 PlayerShortcut.seekBackward5.render()
                 PlayerShortcut.seekForward5.render()
-                #endif
 
                 PlayerShortcut.seekBackward10.render()
                 PlayerShortcut.seekForward10.render()
@@ -24,17 +22,13 @@ struct PlayerCommands: Commands {
                 PlayerShortcut.previousChapter.render(isAlt: true)
                 PlayerShortcut.nextChapter.render(isAlt: true)
 
-                #if os(macOS)
                 PlayerShortcut.previousChapter.render()
                 PlayerShortcut.nextChapter.render()
-                #endif
             }
 
             Section("playbackSpeed") {
-                #if os(macOS)
                 PlayerShortcut.speedUp.render()
                 PlayerShortcut.slowDown.render()
-                #endif
 
                 PlayerShortcut.speedUp.render(isAlt: true)
                 PlayerShortcut.slowDown.render(isAlt: true)
