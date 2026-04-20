@@ -90,9 +90,11 @@ struct UrlService {
     static func getYoutubeIdFromUrl(url: URL) -> String? {
         // https://m.youtube.com/shorts/jH_QIBtX1gY
         // https://www.youtube.com/watch?v=epBbbysk5cU
+        // https://www.youtube.com/watch/?v=epBbbysk5cU
         // https://piped.video/watch?v=VZIm_2MgdeA
         // https://m.youtube.com/watch?v=Sa-FI9exq8o&pp=ygUTRGV2aWwgR2VvcmdpYSBjb3Zlcg%3D%3D
-        let regex = #"(?:https\:\/\/)?(?:www\.)?(?:m\.)?(?:\S+\.\S+\/(?:(?:watch\?v=)|(?:shorts\/))([^\s\/\?\&\n]+))"#
+        let regex
+            = #"(?:https\:\/\/)?(?:www\.)?(?:m\.)?(?:\S+\.\S+\/(?:(?:watch\/?\?v=)|(?:shorts\/))([^\s\/\?\&\n]+))"#
         if let res = url.absoluteString.matching(regex: regex) {
             return res
         }
