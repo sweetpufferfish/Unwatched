@@ -120,6 +120,17 @@ extension PlayerWebView {
                 handleOverlayTap();
             }
         }, { passive: true });
+        document.addEventListener('pointermove', function(event) {
+            if (event.pointerType !== 'mouse') return;
+            if (isVideoElement(event)) {
+                showOverlay();
+                debouncedHideOverlay();
+            }
+        }, { passive: true });
+        document.addEventListener('pointerleave', function(event) {
+            if (event.pointerType !== 'mouse') return;
+            hideOverlay();
+        }, { passive: true });
 
         function isOverlayHealthy() {
             if (document.contains(overlay)) {
