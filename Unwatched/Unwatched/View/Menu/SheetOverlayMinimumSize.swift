@@ -9,13 +9,11 @@ struct SheetOverlayMinimumSize: View {
     @Environment(PlayerManager.self) var player
     @Environment(SheetPositionReader.self) var sheetPos
 
-    var currentTab: NavigationTab
-
     var body: some View {
         NavigationStack {
             Color.backgroundColor
                 .ignoresSafeArea(.all)
-                .myNavigationTitle(currentTab.stringKey)
+                .myNavigationTitle("showMenu")
                 .toolbar {
                     RefreshToolbarContent()
                 }
@@ -42,9 +40,7 @@ struct SheetOverlayMinimumSize: View {
 }
 
 #Preview {
-    SheetOverlayMinimumSize(
-        currentTab: .queue
-    )
-    .environment(RefreshManager())
-    .environment(SheetPositionReader())
+    SheetOverlayMinimumSize()
+        .environment(RefreshManager())
+        .environment(SheetPositionReader())
 }

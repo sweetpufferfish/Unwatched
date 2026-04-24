@@ -30,10 +30,8 @@ struct MenuViewSheet: ViewModifier {
                             proxy: proxy
                         )
 
-                    SheetOverlayMinimumSize(
-                        currentTab: navManager.tab
-                    )
-                    .opacity(landscapeFullscreen ? 0 : 1)
+                    SheetOverlayMinimumSize()
+                        .opacity(landscapeFullscreen ? 0 : 1)
                 }
                 .if(Const.iOS26) { view in
                     view.presentationBackground(Color.backgroundColor)
