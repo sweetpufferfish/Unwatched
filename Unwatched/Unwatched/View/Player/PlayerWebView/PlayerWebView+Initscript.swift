@@ -581,11 +581,14 @@ extension PlayerWebView {
                         }
                     ` : ''}
                     ${!isNonEmbedding ? `
-                        .ytProgressBarPlayheadProgressBarPlayheadDot,
                         .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
                         .ytChapteredProgressBarChapteredPlayerBarFill,
                         .ytProgressBarLineProgressBarPlayed {
                             background: #ddd !important;
+                        }
+                        .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
+                        .ytProgressBarPlayheadProgressBarPlayheadDot {
+                                background: #fff !important;
                         }
                         ` : ''}
                     ${disableCaptions ? `
@@ -594,11 +597,15 @@ extension PlayerWebView {
                         }
                         ` : ''}
                     ${minimalPlayerUI ? `
-                        .ytmVideoInfoVideoDetailsContainer, .icon-add_to_watch_later,
+                        .ytmVideoInfoVideoDetailsContainer,
                         .fullscreen-watch-next-entrypoint-wrapper, .endscreen-replay-button,
                         .player-control-play-pause-icon, .player-controls-spinner,
-                        .fullscreen-recommendations-wrapper, .ytmPaidContentOverlayHost,
-                        .ytmEmbedsInfoPanelRendererButton, .ytmMuteButtonButton, .ytmCuedOverlayGradient {
+                        .fullscreen-recommendations-wrapper, .ytmPaidContentOverlayHost, .ytdVolumeControlsHost,
+                        .ytmEmbedsInfoPanelRendererButton, .ytmMuteButtonButton, yt-mute-toggle-button, embedded-player-video-details,
+                        .ytmCuedOverlayGradient {
+                            display: none !important;
+                        }
+                        .ytmSlimMetadataButtonRendererHost:has(.icon-add_to_watch_later) {
                             display: none !important;
                         }
                         .player-settings-icon, .ytmClosedCaptioningButtonHost {
