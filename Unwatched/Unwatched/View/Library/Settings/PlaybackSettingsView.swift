@@ -16,7 +16,6 @@ struct PlaybackSettingsView: View {
     @AppStorage(Const.autoAirplayHD) var autoAirplayHD: Bool = false
     @AppStorage(Const.originalAudio) var originalAudio: Bool = true
     @AppStorage(Const.playBrowserVideosInApp) var playBrowserVideosInApp: Bool = false
-
     @Environment(PlayerManager.self) var player
 
     var body: some View {

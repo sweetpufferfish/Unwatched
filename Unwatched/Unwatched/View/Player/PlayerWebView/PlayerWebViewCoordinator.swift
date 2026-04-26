@@ -66,7 +66,8 @@ class PlayerWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageH
             originalAudio: originalAudio,
             playbackId: playbackId,
             blockOverlay: Device.isVision && !parent.player.embeddingDisabled,
-            )
+            seekSeconds: UserDefaults.standard.value(forKey: Const.doubleTapSeekDuration) as? Double ?? Const.seekSeconds
+        )
         let script = PlayerWebView.initScript(options)
         Log.info("InitScriptOptions: \(options)")
         parent.evaluateJavaScript(webView, script)

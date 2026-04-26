@@ -24,6 +24,7 @@ extension PlayerWebView {
         let originalAudio: Bool
         let playbackId: String
         let blockOverlay: Bool
+        let seekSeconds: Double
     }
 
     static func initScript(_ options: InitScriptOptions) -> String {
@@ -42,6 +43,7 @@ extension PlayerWebView {
         const originalAudio = \(options.originalAudio);
         const playbackId = "\(options.playbackId)";
         const blockOverlay = \(options.blockOverlay);
+        const seekSeconds = \(options.seekSeconds);
 
         var video = null;
         let videoFindAttempts = 0;
@@ -954,7 +956,7 @@ extension PlayerWebView {
             showOverlay();
             const touchEndX = event.changedTouches?.[0]?.clientX;
             const screenWidth = window.innerWidth;
-            const seekRel = (touchEndX < screenWidth / 2 ? -1 : 1) * 10;
+            const seekRel = (touchEndX < screenWidth / 2 ? -1 : 1) * seekSeconds;
             smartSeekRelative(seekRel);
         }
 

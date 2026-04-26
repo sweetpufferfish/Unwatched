@@ -16,8 +16,8 @@ struct PlayerCommands: Commands {
                 PlayerShortcut.seekBackward5.render()
                 PlayerShortcut.seekForward5.render()
 
-                PlayerShortcut.seekBackward10.render()
-                PlayerShortcut.seekForward10.render()
+                PlayerShortcut.seekBackwardCustom.render()
+                PlayerShortcut.seekForwardCustom.render()
 
                 PlayerShortcut.previousChapter.render(isAlt: true)
                 PlayerShortcut.nextChapter.render(isAlt: true)

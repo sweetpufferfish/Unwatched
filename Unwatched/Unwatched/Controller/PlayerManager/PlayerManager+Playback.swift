@@ -137,12 +137,16 @@ extension PlayerManager {
 
     @MainActor
     func seekForward(_ seconds: Double? = nil) -> Bool {
-        seek(backward: false, seconds ?? Const.seekSeconds)
+        seek(backward: false, seconds ?? userSeekSeconds)
     }
 
     @MainActor
     func seekBackward(_ seconds: Double? = nil) -> Bool {
-        seek(backward: true, seconds ?? Const.seekSeconds)
+        seek(backward: true, seconds ?? userSeekSeconds)
+    }
+
+    var userSeekSeconds: Double {
+        UserDefaults.standard.value(forKey: Const.doubleTapSeekDuration) as? Double ?? Const.seekSeconds
     }
 
     @MainActor
