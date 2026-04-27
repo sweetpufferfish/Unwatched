@@ -154,42 +154,59 @@ struct VideoListItemSwipeActionsModifier: ViewModifier {
 
     func addVideoToTopQueue() {
         Log.info("addVideoTop")
-        performVideoAction(
-            isNew: false,
-            asyncAction: { videoId in
-                VideoService.insertQueueEntriesAsync(
-                    at: 1,
-                    videoIds: [videoId]
-                )
-            },
-            syncAction: { video in
-                VideoService.insertQueueEntries(
-                    at: 1,
-                    videos: [video],
-                    modelContext: modelContext
-                )
-            },
-            changeReason: .moveToQueue
-        )
+        queueAction {
+            performVideoAction(
+                isNew: false,
+                asyncAction: { videoId in
+                    VideoService.insertQueueEntriesAsync(
+                        at: 1,
+                        videoIds: [videoId]
+                    )
+                },
+                syncAction: { video in
+                    VideoService.insertQueueEntries(
+                        at: 1,
+                        videos: [video],
+                        modelContext: modelContext
+                    )
+                },
+                changeReason: .moveToQueue
+            )
+        }
     }
 
     func addVideoToBottomQueue() {
         Log.info("addVideoBottom")
-        performVideoAction(
-            isNew: false,
-            asyncAction: { videoId in
-                VideoService.addToBottomQueueAsync(
-                    videoId: videoId
-                )
-            },
-            syncAction: { video in
-                VideoService.addToBottomQueue(
-                    video: video,
-                    modelContext: modelContext
-                )
-            },
-            changeReason: .moveToQueue
-        )
+        queueAction {
+            performVideoAction(
+                isNew: false,
+                asyncAction: { videoId in
+                    VideoService.addToBottomQueueAsync(
+                        videoId: videoId
+                    )
+                },
+                syncAction: { video in
+                    VideoService.addToBottomQueue(
+                        video: video,
+                        modelContext: modelContext
+                    )
+                },
+                changeReason: .moveToQueue
+            )
+        }
+    }
+
+    func queueAction(_ action: @escaping @MainActor () -> Void) {
+        guard config.delayQueueAction else { action(); return }
+        // Workaround: delay so the swipe snap-back animation finishes before the list reorders.
+        // Without this, animationDidEnd: fires on a row that moved off-screen, crashing.
+        // and the animation is broken on iOS 26
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(450))
+            withAnimation {
+                action()
+            }
+        }
     }
 
     func moveToInbox() {

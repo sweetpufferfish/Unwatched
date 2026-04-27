@@ -57,6 +57,7 @@ struct QueueView: View {
                                         clearAboveBelowList: .queue,
                                         showContextMenu: enableQueueContextMenu,
                                         showDelete: false,
+                                        delayQueueAction: true,
                                         ),
                                     onChange: { reason, order in
                                         handleChange(reason, videoId, youtubeId, order ?? entry.order)

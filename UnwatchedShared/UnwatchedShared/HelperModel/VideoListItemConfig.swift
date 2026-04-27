@@ -31,6 +31,7 @@ public struct VideoListItemConfig: Equatable, Sendable {
     public let showContextMenu: Bool
     public let showDelete: Bool
     public let async: Bool
+    public let delayQueueAction: Bool
 
     public init(
         hasInboxEntry: Bool? = nil,
@@ -46,7 +47,8 @@ public struct VideoListItemConfig: Equatable, Sendable {
         showQueueButton: Bool = false,
         showContextMenu: Bool = true,
         showDelete: Bool = true,
-        async: Bool = false
+        async: Bool = false,
+        delayQueueAction: Bool = false
     ) {
         self.hasInboxEntry = hasInboxEntry
         self.hasQueueEntry = hasQueueEntry
@@ -66,6 +68,7 @@ public struct VideoListItemConfig: Equatable, Sendable {
         #endif
         self.showDelete = showDelete
         self.async = async
+        self.delayQueueAction = delayQueueAction
     }
 }
 
