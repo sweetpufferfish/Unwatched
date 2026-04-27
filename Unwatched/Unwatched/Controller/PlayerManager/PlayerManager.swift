@@ -390,16 +390,16 @@ extension PlayerManager {
             let modelContext = DataProvider.mainContext
             try? modelContext.save()
 
-            #if os(macOS)
-            NavigationManager.shared.toggleSidebar(show: true)
-            #else
             if showMenu {
+                #if os(macOS)
+                NavigationManager.shared.toggleSidebar(show: true)
+                #else
                 setShowMenu()
                 if Const.returnToQueue.bool ?? false {
                     NavigationManager.shared.navigateToQueue()
                 }
+                #endif
             }
-            #endif
 
             // workaround: clear on main thread for animation to work (broken in iOS 18.0-2)
             VideoService.setVideoWatched(video, modelContext: modelContext)
