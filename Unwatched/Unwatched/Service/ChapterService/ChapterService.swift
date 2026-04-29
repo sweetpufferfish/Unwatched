@@ -14,7 +14,7 @@ struct ChapterService {
         let input = description
         do {
             let regexTimeThenTitle = try NSRegularExpression(
-                pattern: #"^\s*\W*?(\d+(?:\:\d+)+(?:\.\d+)?)[:\])|\-—–]*\s*[:\])|\-—–]?\s*(.+)(?<![,:;\s])[:\|\-—–]?\s*?\n?\s*?(https?:\/\/[^\s)]+)?"#,
+                pattern: #"^\s*\W*?(\d+(?:\:\d+)+(?:\.\d+)?)[:\])|\-—–]*\s*[:\])|\-—–]?\s*(?:\d+(?:\:\d+)+(?:\.\d+)?\h+)?(.+)(?<![,:;\s])[:\|\-—–]?\s*?\n?\s*?(https?:\/\/[^\s)]+)?"#,
                 options: [.anchorsMatchLines]
             )
             let regexTitleThenTime = try NSRegularExpression(

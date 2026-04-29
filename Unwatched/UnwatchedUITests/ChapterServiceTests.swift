@@ -1190,6 +1190,30 @@ final class ChapterServiceTests: XCTestCase {
                     SendableChapter(title: "Implementing Conditional Rating Popup", startTime: 1 * 60 + 12, endTime: nil)
                 ]
             ),
+
+            // time range format: start - end  Title (end time is ignored)
+            (
+                """
+                00:00 - 00:41  Chinese robots are invading America
+                00:41 - 03:15  The rise of automation
+                03:15 - 10:00  What experts say
+                """,
+                [
+                    SendableChapter(title: "Chinese robots are invading America", startTime: 0, endTime: 41),
+                    SendableChapter(title: "The rise of automation", startTime: 41, endTime: 3 * 60 + 15),
+                    SendableChapter(title: "What experts say", startTime: 3 * 60 + 15, endTime: nil)
+                ]
+            ),
+            (
+                """
+                1:23:45 - 2:34:56  Long video chapter one
+                2:34:56 - 3:00:00  Long video chapter two
+                """,
+                [
+                    SendableChapter(title: "Long video chapter one", startTime: 1 * 3600 + 23 * 60 + 45, endTime: 2 * 3600 + 34 * 60 + 56),
+                    SendableChapter(title: "Long video chapter two", startTime: 2 * 3600 + 34 * 60 + 56, endTime: nil)
+                ]
+            ),
         ]
 
         for (description, expected) in testValues {
