@@ -42,6 +42,7 @@ class PlayerWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageH
 
     @MainActor func webView(_ webView: WKWebView, didFinish navigation: WKNavigation) {
         let disableCaptions = UserDefaults.standard.bool(forKey: Const.disableCaptions)
+        let autoCaptionsOnSeekBack = UserDefaults.standard.bool(forKey: Const.autoCaptionsOnSeekBack)
         let minimalPlayerUI = UserDefaults.standard.bool(forKey: Const.minimalPlayerUI)
         let enableLogging = UserDefaults.standard.bool(forKey: Const.enableLogging)
         let originalAudio = UserDefaults.standard.bool(forKey: Const.originalAudio)
@@ -58,6 +59,7 @@ class PlayerWebViewCoordinator: NSObject, WKNavigationDelegate, WKScriptMessageH
             startAt: parent.player.getStartPosition(),
             requiresFetchingVideoData: parent.player.requiresFetchingVideoData(),
             disableCaptions: disableCaptions,
+            autoCaptionsOnSeekBack: autoCaptionsOnSeekBack,
             minimalPlayerUI: minimalPlayerUI,
             isNonEmbedding: parent.player.embeddingDisabled,
             hijackFullscreenButton: hijackFullscreenButton,

@@ -279,6 +279,7 @@ public struct Const {
     public static let useNoCookieUrl = "useNoCookieUrl"
     public static let enableQueueContextMenu = "enableQueueContextMenu"
     public static let disableCaptions = "disableCaptions"
+    public static let autoCaptionsOnSeekBack = "autoCaptionsOnSeekBack"
     public static let minimalPlayerUI = "minimalPlayerUI"
     public static let swipeGestureUp = "swipeGestureUp"
     public static let swipeGestureDown = "swipeGestureDown"

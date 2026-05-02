@@ -48,6 +48,7 @@ extension Const {
         Const.temporarySlowDown: Const.speedMin,
         Const.playVideoFullscreen: false,
         Const.disableCaptions: false,
+        Const.autoCaptionsOnSeekBack: true,
         Const.minimalPlayerUI: false,
 
         Const.swipeGestureUp: true,

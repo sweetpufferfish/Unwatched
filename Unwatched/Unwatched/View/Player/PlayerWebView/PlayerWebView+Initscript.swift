@@ -16,6 +16,7 @@ extension PlayerWebView {
         let startAt: Double
         let requiresFetchingVideoData: Bool?
         let disableCaptions: Bool
+        let autoCaptionsOnSeekBack: Bool
         let minimalPlayerUI: Bool
         let isNonEmbedding: Bool
         let hijackFullscreenButton: Bool
@@ -33,6 +34,7 @@ extension PlayerWebView {
         var playbackRate = \(options.playbackSpeed);
         var startAtTime = \(options.startAt);
         var disableCaptions = \(options.disableCaptions);
+        var autoCaptionsOnSeekBack = \(options.autoCaptionsOnSeekBack);
         var minimalPlayerUI = \(options.minimalPlayerUI);
         const interceptKeys = \(PlayerShortcut.interceptKeysJS);
         const isNonEmbedding = \(options.isNonEmbedding);
@@ -521,6 +523,22 @@ extension PlayerWebView {
             }
         }, { passive: true, capture: true });
 
+        // auto captions on seek back
+        var captionRestoreTimer = null;
+        function showCaptionsTemporarily(durationSeconds) {
+            if (!autoCaptionsOnSeekBack) return;
+            const ytPlayer = document.getElementById('movie_player');
+            if (!ytPlayer) return;
+            const wasAlreadyOn = ytPlayer.isSubtitlesOn() && captionRestoreTimer === null;
+            if (wasAlreadyOn) return;
+            clearTimeout(captionRestoreTimer);
+            if (!ytPlayer.isSubtitlesOn()) ytPlayer.toggleSubtitles();
+            captionRestoreTimer = setTimeout(() => {
+                if (ytPlayer.isSubtitlesOn()) ytPlayer.toggleSubtitles();
+                captionRestoreTimer = null;
+            }, durationSeconds * 1000);
+        }
+
         // styling
         styling()
         function styling() {
@@ -910,6 +928,9 @@ extension PlayerWebView {
         }
 
         function smartSeekRelative(seekRel) {
+            if (seekRel < 0) {
+                showCaptionsTemporarily(Math.abs(seekRel));
+            }
             if (seekRel >= 0 || !window.hasInactiveChapters || !window.unwatchedChapters || window.unwatchedChapters.length === 0) {
                 if (video.duration) {
                      video.currentTime = Math.min(video.currentTime + seekRel, video.duration - 0.2);

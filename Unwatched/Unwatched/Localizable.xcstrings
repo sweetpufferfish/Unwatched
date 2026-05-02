@@ -1650,6 +1650,40 @@
         }
       }
     },
+    "autoCaptionsOnSeekBack" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untertitel beim Zurückspulen anzeigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Captions When Seeking Back"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar subtítulos al retroceder"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les sous-titres en retour"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż napisy przy cofaniu"
+          }
+        }
+      }
+    },
     "autoClearNew" : {
       "localizations" : {
         "de" : {
