@@ -112,12 +112,28 @@ extension PlayerWebView {
         let lastTapDate = null;
         let consecutiveSingleTaps = 0;
         let allowFadeinChanges = false;
+        let overlayIntendedVisible = false;
         sendMessage('isNewEmbedding', isNewEmbedding);
 
         setupOverlay();
         if (minimalPlayerUI) {
             hideOverlay();
         }
+
+        // Watch for the overlay element being replaced during initial load.
+        // Disconnects after 5s — replacements happen early (triggered by setting currentTime).
+        if (isNewEmbedding && overlay.parentElement) {
+            const overlayReplaceObserver = new MutationObserver(() => {
+                const found = document.querySelector('#player-control-overlay');
+                if (found && found !== overlay) {
+                    overlay = found;
+                    restoreOverlayState();
+                }
+            });
+            overlayReplaceObserver.observe(overlay.parentElement, { childList: true });
+            setTimeout(() => overlayReplaceObserver.disconnect(), 5000);
+        }
+
         document.addEventListener('pointerup', function(event) {
             if (event.pointerType !== 'mouse') return;
             if (isVideoElement(event)) {
@@ -136,6 +152,14 @@ extension PlayerWebView {
             hideOverlay();
         }, { passive: true });
 
+        function restoreOverlayState() {
+            setupOverlay();
+            if (overlayIntendedVisible) {
+                showOverlay();
+            } else {
+                hideOverlay();
+            }
+        }
         function isOverlayHealthy() {
             if (document.contains(overlay)) {
                 return true;
@@ -144,7 +168,7 @@ extension PlayerWebView {
             if (!overlay) {
                 return false;
             }
-            setupOverlay();
+            restoreOverlayState();
             return true;
         }
         function overlayIsVisible() {
@@ -212,6 +236,7 @@ extension PlayerWebView {
 
         function showOverlay() {
             if (overlayIsVisible() || !isNewEmbedding) return;
+            overlayIntendedVisible = true;
             allowFadeinChanges = true;
             overlay.classList.add('fadein');
             allowFadeinChanges = false;
@@ -224,6 +249,7 @@ extension PlayerWebView {
         function hideOverlay() {
             const isHealthy = isOverlayHealthy();
             if ((isHealthy && !overlayIsVisible()) || !isNewEmbedding) return;
+            overlayIntendedVisible = false;
             allowFadeinChanges = true;
             overlay.classList.remove('fadein');
             allowFadeinChanges = false;
