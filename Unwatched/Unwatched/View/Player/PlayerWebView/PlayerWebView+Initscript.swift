@@ -642,6 +642,11 @@ extension PlayerWebView {
                             display: none !important;
                         }
                         ` : ''}
+                    ${autoCaptionsOnSeekBack ? `
+                        #toasts, .ytp-caption-window-top {
+                            display: none !important;
+                        }
+                        ` : ''}
                     ${minimalPlayerUI ? `
                         .ytmVideoInfoVideoDetailsContainer,
                         .fullscreen-watch-next-entrypoint-wrapper, .endscreen-replay-button,
